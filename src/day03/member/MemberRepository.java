@@ -42,15 +42,42 @@ public class MemberRepository {
 
     /**
      * 이메일의 중복여부를 확인하는 메서드
+     *
+     * @param1 email - 중복검사 대상 이메일
+     * @return - 중복되었다면 true, 아니라면 false
      */
+    boolean isDuplicatedEmail(String email) {
+        for (Member member : memberList) {
+            if (email.equals(member.email)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 이메일을 통해 특정 회원 객체를 찾아서 반환하는 메서드
+     *
+     * @param1 email - 탐색할 멤버객체의 이메일
+     * @return - 해당 이메일과 일치하는 회원의 모든정보 객체
+     *           이메일이 일치하지 않으면 null 리턴
      */
+    Member findMemberByEmail(String email) {
+        for (Member member : memberList) {
+            if (email.equals(member.email)) {
+                return member;
+            }
+        }
+        return null;
+    }
 
     /**
      * 비밀번호를 수정하는 메서드
      */
+    void updatePassword(String newPassword, String email) {
+        Member member = findMemberByEmail(email);
+        member.password = newPassword;
+    }
 
     /**
      * 회원탈퇴를 처리하는 메서드
