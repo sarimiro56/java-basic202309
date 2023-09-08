@@ -18,22 +18,25 @@ public class StringList {
         }
     }
 
-    // 배열 맨 끝 데이터 제거
+    // 배열 맨 끝데이터 제거
     void pop() {
         String[] temp = new String[sArr.length - 1];
         for (int i = 0; i < temp.length; i++) {
             temp[i] = sArr[i];
         }
+        sArr = temp;
     }
 
     void printArray() {
         System.out.println(Arrays.toString(sArr));
     }
 
-    public int size() {
+    // 배열에 저장된 데이터 수를 알려주는 기능
+    int size() {
         return sArr.length;
     }
 
+    // 배열에 맨 끝에 데이터를 추가하는 기능
     void push(String newData) {
         String[] temp = new String[sArr.length + 1];
         for (int i = 0; i < sArr.length; i++) {
@@ -42,12 +45,10 @@ public class StringList {
         temp[temp.length - 1] = newData;
         sArr = temp;
     }
-
     // 배열이 비어있는지 확인
     boolean isEmpty() {
         return sArr.length == 0;
     }
-
     // 배열을 전체 삭제하는 메서드
     void clear() {
         sArr = new String[0];
