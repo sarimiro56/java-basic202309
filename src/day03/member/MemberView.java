@@ -27,7 +27,8 @@ public class MemberView {
         System.out.println("* 3. 전체회원 정보 조회하기");
         System.out.println("* 4. 회원 정보 수정하기");
         System.out.println("* 5. 회원 정보 삭제하기");
-        System.out.println("* 6. 프로그램 끝내기");
+        if (mr.getNumberOfMembers() < MAX_REGISTER) System.out.println("* 6. 회원 정보 복구하기");
+        System.out.println("* 7. 프로그램 끝내기");
         System.out.println("=============================");
     }
 
@@ -61,6 +62,13 @@ public class MemberView {
                     deleteMemberProcess();
                     break;
                 case "6":
+                    if (mr.getNumberOfMembers() > MAX_REGISTER - 1) {
+                        System.out.println("# 회원목록이 꽉차서 현재 복구가 불가능합니다.");
+                        continue;
+                    }
+                    restoreMember();
+                    break;
+                case "7":
                     String answer = input("# 정말로 종료합니까? [y/n] : ");
                     if (answer.toLowerCase().charAt(0) == 'y') {
                         System.out.println("# 프로그램을 종료합니다.");
@@ -75,19 +83,43 @@ public class MemberView {
         }
     }
 
-    private void deleteMemberProcess() {
+    private void restoreMember() {
         // 이메일을 입력받음
-        String email = input("# 삭제 대상의 이메일: ");
+        String email = input("# 복구 대상의 이메일: ");
 
-        // 삭제 대상 탐색
-        Member member = mr.findMemberByEmail(email);
+        // 복구 대상 탐색
+        Member member = mr.findMemberByEmail(email, true);
 
         if (member != null) {
             // 패스워드 검사
             String inputPw = input("# 비밀번호: ");
 
             if (mr.isMatchPassword(inputPw, member.password)) {
-                mr.deleteMember(email);
+                mr.deleteMember(email, true);
+                System.out.println("\n# 회원 복구가 처리되었습니다.");
+            } else {
+                System.out.println("\n# 비밀번호가 일치하지 않습니다.");
+            }
+
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다.");
+        }
+        stop();
+    }
+
+    private void deleteMemberProcess() {
+        // 이메일을 입력받음
+        String email = input("# 삭제 대상의 이메일: ");
+
+        // 삭제 대상 탐색
+        Member member = mr.findMemberByEmail(email, false);
+
+        if (member != null) {
+            // 패스워드 검사
+            String inputPw = input("# 비밀번호: ");
+
+            if (mr.isMatchPassword(inputPw, member.password)) {
+                mr.deleteMember(email, false);
                 System.out.println("\n# 회원 탈퇴가 처리되었습니다. 복구하시려면 복구메뉴를 이용하세요.");
             } else {
                 System.out.println("\n# 비밀번호가 일치하지 않습니다.");
@@ -104,7 +136,7 @@ public class MemberView {
         String email = input("# 조회 대상의 이메일: ");
 
         // 조회 대상 탐색
-        Member member = mr.findMemberByEmail(email);
+        Member member = mr.findMemberByEmail(email, false);
 
         // 회원이 탐색됨
         if (member != null) {
@@ -121,7 +153,7 @@ public class MemberView {
         String email = input("# 수정 대상의 이메일: ");
 
         // 수정 대상 탐색
-        Member member = mr.findMemberByEmail(email);
+        Member member = mr.findMemberByEmail(email, false);
 
         // 회원이 탐색됨
         if (member != null) {
