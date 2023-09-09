@@ -5,6 +5,9 @@ import java.util.Scanner;
 // 역할: 회원관리 앱의 입출력을 담당
 public class MemberView {
 
+    // 상수 만들기
+    public static final int MAX_REGISTER = 4;
+
     Scanner sc;
     MemberRepository mr;
 
@@ -19,7 +22,7 @@ public class MemberView {
      */
     void mainView() {
         System.out.println("\n##### 회원 관리 시스템 #####");
-        System.out.println("* 1. 회원 정보 등록하기");
+        if (mr.getNumberOfMembers() < MAX_REGISTER) System.out.println("* 1. 회원 정보 등록하기");
         System.out.println("* 2. 개별회원 정보 조회하기");
         System.out.println("* 3. 전체회원 정보 조회하기");
         System.out.println("* 4. 회원 정보 수정하기");
@@ -38,9 +41,14 @@ public class MemberView {
 
             switch (menuNum) {
                 case "1":
+                    if (mr.getNumberOfMembers() > MAX_REGISTER - 1) {
+                        System.out.println("# 더 이상 회원등록을 할 수 없습니다.");
+                        continue;
+                    }
                     signUp();
                     break;
                 case "2":
+                    showDetail();
                     break;
                 case "3":
                     mr.showMembers();
@@ -50,6 +58,7 @@ public class MemberView {
                     changePassword();
                     break;
                 case "5":
+                    deleteMemberProcess();
                     break;
                 case "6":
                     String answer = input("# 정말로 종료합니까? [y/n] : ");
@@ -64,6 +73,47 @@ public class MemberView {
                     System.out.println("\n# 메뉴 번호를 다시 입력하세요");
             }
         }
+    }
+
+    private void deleteMemberProcess() {
+        // 이메일을 입력받음
+        String email = input("# 삭제 대상의 이메일: ");
+
+        // 삭제 대상 탐색
+        Member member = mr.findMemberByEmail(email);
+
+        if (member != null) {
+            // 패스워드 검사
+            String inputPw = input("# 비밀번호: ");
+
+            if (mr.isMatchPassword(inputPw, member.password)) {
+                mr.deleteMember(email);
+                System.out.println("\n# 회원 탈퇴가 처리되었습니다. 복구하시려면 복구메뉴를 이용하세요.");
+            } else {
+                System.out.println("\n# 비밀번호가 일치하지 않습니다.");
+            }
+
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다.");
+        }
+        stop();
+    }
+
+    private void showDetail() {
+        // 이메일을 입력받음
+        String email = input("# 조회 대상의 이메일: ");
+
+        // 조회 대상 탐색
+        Member member = mr.findMemberByEmail(email);
+
+        // 회원이 탐색됨
+        if (member != null) {
+            // 탐색된 회원의 정보를 출력
+            member.showDetailInfo();
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다.");
+        }
+        stop();
     }
 
     private void changePassword() {

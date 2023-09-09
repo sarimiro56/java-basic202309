@@ -21,5 +21,12 @@ public class Test {
         Member foundMember = mr.findMemberByEmail(email);
         System.out.println("foundMember.inform() = " + foundMember.inform());
 
+
+        mr.deleteMember(email);
+        mr.deleteMember("xxx@vvv.com");
+        mr.deleteMember("ttt@yyy.com");
+
+        mr.showMembers();
+        mr.printRemoveMembers();
     }
 }
