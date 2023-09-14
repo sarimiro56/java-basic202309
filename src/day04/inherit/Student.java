@@ -1,5 +1,11 @@
 package day04.inherit;
 
+class Address {
+    String city;
+    String street;
+    String zipcode;
+}
+
 public class Student extends Person {
 
     public Student() {

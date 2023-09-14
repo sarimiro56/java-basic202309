@@ -22,7 +22,7 @@ public class A {
         m1(); m2(); m3();
 
     }
-    A(int a) {
+    protected A(int a) {
 
     }
     private A(String b) {
