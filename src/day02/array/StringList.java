@@ -8,7 +8,7 @@ public class StringList {
     String[] sArr;
 
     // 생성자를 통해 배열을 초기화
-    StringList() {
+    public StringList() {
         sArr = new String[0];
     }
     StringList(String... initData) {
@@ -32,12 +32,12 @@ public class StringList {
     }
 
     // 배열에 저장된 데이터 수를 알려주는 기능
-    int size() {
+    public int size() {
         return sArr.length;
     }
 
     // 배열에 맨 끝에 데이터를 추가하는 기능
-    void push(String newData) {
+    public void push(String newData) {
         String[] temp = new String[sArr.length + 1];
         for (int i = 0; i < sArr.length; i++) {
             temp[i] = sArr[i];
@@ -102,4 +102,7 @@ public class StringList {
         sArr = temp;
     }
 
+    public String[] getsArr() {
+        return sArr;
+    }
 }
