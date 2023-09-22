@@ -1,30 +1,34 @@
-package day02.array;
+package day08.generic;
 
 import java.util.Arrays;
 
-public class StringList {
+public class GenericList<V> {
 
     // 스트링 배열을 필드로 등록
-    String[] sArr;
+    Object[] sArr;
 
     // 생성자를 통해 배열을 초기화
-    public StringList() {
-        sArr = new String[0];
+    public GenericList() {
+        sArr = new Object[0];
     }
-    StringList(String... initData) {
-        sArr = new String[initData.length];
+    public GenericList(V... initData) {
+        sArr = new Object[initData.length];
         for (int i = 0; i < sArr.length; i++) {
             sArr[i] = initData[i];
         }
     }
 
-    // 배열 맨 끝데이터 제거
-    void pop() {
-        String[] temp = new String[sArr.length - 1];
+    // 배열 맨 끝데이터 제거 후 삭제된 데이터 리턴
+    V pop() {
+        Object deleteDatum = sArr[sArr.length - 1];
+
+        Object[] temp = new Object[sArr.length - 1];
         for (int i = 0; i < temp.length; i++) {
             temp[i] = sArr[i];
         }
         sArr = temp;
+
+        return (V) deleteDatum;
     }
 
     void printArray() {
@@ -37,8 +41,8 @@ public class StringList {
     }
 
     // 배열에 맨 끝에 데이터를 추가하는 기능
-    public void push(String newData) {
-        String[] temp = new String[sArr.length + 1];
+    public void push(V newData) {
+        Object[] temp = new Object[sArr.length + 1];
         for (int i = 0; i < sArr.length; i++) {
             temp[i] = sArr[i];
         }
@@ -51,11 +55,11 @@ public class StringList {
     }
     // 배열을 전체 삭제하는 메서드
     void clear() {
-        sArr = new String[0];
+        sArr = new Object[0];
     }
 
     // 인덱스 탐색 (indexOf)
-    public int indexOf(String target) {
+    public int indexOf(V target) {
         for (int i = 0; i < sArr.length; i++) {
             if (target.equals(sArr[i])) {
                 return i;
@@ -65,33 +69,33 @@ public class StringList {
     }
 
     // 자료 유무 확인 (includes)
-    public boolean includes(String target) {
+    public boolean includes(V target) {
         return indexOf(target) != -1;
     }
 
     // 중간 삭제 (remove) : 인덱스로 삭제
-    public String remove(int index) {
+    public V remove(int index) {
         if (index < 0 || index > sArr.length - 1) return null;
 
-        String targetData = sArr[index];
+        Object targetData = sArr[index];
         for (int i = index; i < sArr.length - 1; i++) {
             sArr[i] = sArr[i + 1];
         }
         pop();
-        return targetData;
+        return (V) targetData;
     }
     // 중간 삭제 (remove) : 값으로 삭제
-    public String remove(String target) {
+    public V remove(V target) {
         return remove(indexOf(target));
     }
 
     // 중간 삽입 (insert)
-    public void insert(int index, String newData) {
+    public void insert(int index, V newData) {
 
         if (index < 0 || index > sArr.length - 1) return;
         if (index == sArr.length - 1) push(newData);
 
-        String[] temp = new String[sArr.length + 1];
+        Object[] temp = new Object[sArr.length + 1];
         for (int i = 0; i < sArr.length; i++) {
             temp[i] = sArr[i];
         }
@@ -102,7 +106,7 @@ public class StringList {
         sArr = temp;
     }
 
-    public String[] getsArr() {
+    public Object[] getsArr() {
         return sArr;
     }
 }
