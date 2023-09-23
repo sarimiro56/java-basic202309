@@ -18,6 +18,10 @@ public class ArtistView {
 
     // 메인 실행 기능
     public static void start() {
+
+        // 세이브파일 로드
+        ar.loadFile();
+
         while (true) {
             System.out.println("\n\n****** 음악 관리 프로그램 ******");
             System.out.printf("# 현재 등록된 가수: %d명\n", ar.count());
@@ -48,13 +52,16 @@ public class ArtistView {
 
     // 2번 메뉴에 대한 입출력 실행 내용
     private static void searchProcess() {
+
         System.out.println("\n# 검색할 가수명을 입력하세요.");
         String artistName = input("- 가수명: ");
+
         if (ar.isRegistered(artistName)) {
             System.out.printf("\n# %s님의 노래목록 \n", artistName);
             makeLine();
 
             ar.showSongList(artistName);
+
         } else {
             System.out.println("\n# 해당 가수는 등록되지 않았습니다.");
         }
@@ -81,6 +88,8 @@ public class ArtistView {
                 System.out.printf("\n# [%s]곡은 이미 등록된 노래입니다.\n", songName);
             }
         }
+
+        ar.autoSave();
 
     }
 

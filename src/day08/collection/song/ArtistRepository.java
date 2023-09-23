@@ -1,6 +1,14 @@
 package day08.collection.song;
 
-import java.util.*;
+import day10.io.rw.FilePath;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ArtistRepository {
 
@@ -68,4 +76,41 @@ public class ArtistRepository {
             System.out.printf("* %d. %s\n", i+1, songs.get(i));
         }
     }
+
+    // 세이브 기능
+    public void autoSave() {
+        // 폴더 생성
+        File f = new File(FilePath.path + "/music");
+        if (!f.exists()) f.mkdir();
+
+        try (FileOutputStream fos = new FileOutputStream(FilePath.path + "/music/song.sav")) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(artistList);
+
+        } catch (Exception e) {
+
+        }
+    }
+    // 로드 기능
+    public void loadFile() {
+
+        // 세이브 파일이 있는지 확인
+        File f = new File(FilePath.path + "/music/song.sav");
+
+        if (f.exists()) { // 해당 세이브파일이 존재하면 로드 진행
+            try (FileInputStream fis = new FileInputStream(FilePath.path + "/music/song.sav")) {
+
+                ObjectInputStream ois = new ObjectInputStream(fis);
+
+                artistList = (Map<String, Artist>) ois.readObject();
+
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+
 }
