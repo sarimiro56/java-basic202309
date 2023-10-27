@@ -25,9 +25,9 @@ public class Filtering {
 //        dishInVegetarian.forEach(dish -> System.out.println(dish));
 
         menuList.stream()
-                .filter(dish -> dish.isVegeterian())
+                .filter(Dish::isVegeterian)
                 .collect(toList())
-                .forEach(dish -> System.out.println(dish));
+                .forEach(System.out::println)
         ;
 
 
@@ -36,14 +36,14 @@ public class Filtering {
         menuList.stream()
                 .filter(d -> d.getType() == Dish.Type.MEAT && d.getCalories() < 600)
                 .collect(toList())
-                .forEach(d -> System.out.println(d));
+                .forEach(System.out::println);
 
         System.out.println("=== 요리중에 요리이름이 4글자인 요리만 필터링 ===");
 
         menuList.stream()
                 .filter(dish -> dish.getName().length() == 4)
                 .collect(toList())
-                .forEach(d -> System.out.println(d));
+                .forEach(System.out::println);
 
 
         System.out.println("=== 요리에서 300칼로리보다 큰 요리만 필터링 ===");
